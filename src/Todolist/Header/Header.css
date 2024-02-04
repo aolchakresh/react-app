@@ -1,0 +1,14 @@
+.header {
+    padding: 1px;
+    text-align: center;
+    color: white;
+    font-size: 15px;
+    border-bottom: 2px solid gray;
+  
+    li {
+      display: inline-block;
+      margin-right: 50px; 
+      text-decoration: underline;
+    }
+  }
+
