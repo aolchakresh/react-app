@@ -7,9 +7,8 @@ import PageNotFound from './Todolist/Login/PageNotFound.jsx'
 import Header from './Todolist/Header/Header.jsx'
 
 function App() {
+  localStorage.setItem('loginname', 'chakresh')
   const location = useLocation();
-  console.log(location);
-
   const showHeader = location.pathname === '/Home' || location.pathname === '/Additems'
   return (
     <div>
@@ -18,7 +17,7 @@ function App() {
       <Routes>
         <Route path="/Home" element={<Home />}/>
         <Route path="/Additems" element={<AddTodoItem />}/>
-        <Route path="/" element={<Login />}/>
+        <Route path="/login" element={<Login />}/>
         <Route path="*" element={<PageNotFound />}/>
       </Routes>
     </div>

@@ -16,7 +16,7 @@ function Login() {
   };
 
   const clickHandler = () => {
-    if (inputtext === "chakresh") {
+    if (inputtext === localStorage.getItem('loginname')) {
       navigate(`/Home`);
       console.log(inputtext);
     } else {
