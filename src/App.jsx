@@ -5,19 +5,22 @@ import {Routes, Route, useLocation} from 'react-router-dom'
 import Login from './Todolist/Login/Login.jsx'
 import PageNotFound from './Todolist/Login/PageNotFound.jsx'
 import Header from './Todolist/Header/Header.jsx'
+import { useNavigate } from "react-router-dom";
 
 function App() {
   localStorage.setItem('loginname', 'chakresh')
   const location = useLocation();
   const showHeader = location.pathname === '/Home' || location.pathname === '/Additems'
+  const showTaskManager = location.pathname === '/Home' || location.pathname === '/Additems' || location.pathname === '/login'
   return (
     <div>
       {showHeader && <Header />}
-      <h1>Task Manager</h1>
+      {showTaskManager && <h1>Task Manager</h1>}
       <Routes>
+        <Route path="/" element={<Login />} />
+        <Route path="/login" element={<Login />}/>
         <Route path="/Home" element={<Home />}/>
         <Route path="/Additems" element={<AddTodoItem />}/>
-        <Route path="/login" element={<Login />}/>
         <Route path="*" element={<PageNotFound />}/>
       </Routes>
     </div>

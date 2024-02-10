@@ -10,8 +10,15 @@ function AddTodoItem() {
   const inputRef = useRef();
   const selectedItems = useRef([]);
   const [completedItems, setcompletedItems] = useState([]);
+
   useEffect(() => {
     inputRef.current.focus();
+    if(localStorage.items){
+      setItems(JSON.parse(localStorage.items));
+    }
+    if(localStorage.completedItems){
+    setcompletedItems(JSON.parse(localStorage.completedItems));
+    }
   }, []);
 
   const handleChange = (props) => {
@@ -32,14 +39,25 @@ function AddTodoItem() {
   };
 
   const handleDelete = () => {
-    //let completedItems = [];
     selectedItems.current.forEach((element) => {
       completedItems.push(items[element]);
     });
 
     setcompletedItems(completedItems);
     setItems(items.filter((i) => !completedItems.includes(i)));
+    
   };
+
+  const handleSave = () => {
+    localStorage.items = JSON.stringify(items);
+    localStorage.completedItems = JSON.stringify(completedItems);
+  };
+
+  const handleClearhistory = () => {
+    localStorage.clear();
+    setItems([]);
+    setcompletedItems([]);
+  }
 
   return (
     <form onSubmit={handleSubmit}>
@@ -54,7 +72,7 @@ function AddTodoItem() {
           onChange={handleChange}
           ref={inputRef}
         />
-        &nbsp;
+        &nbsp; &nbsp;
         <input type="submit" value="Submit" onClick={clickHandler} />
         <ul className="uoList">
           {items.map((item) => (
@@ -82,8 +100,14 @@ function AddTodoItem() {
       </div>
       <br />
       <br />
+      <button type="submit" onClick={handleSave}>
+          Save all changes
+      </button>
+      &nbsp;&nbsp;
+      <button type="submit" onClick={handleClearhistory}>
+          Clear all history
+      </button>
     </form>
-  
   );
 }
 

@@ -18,7 +18,6 @@ function Login() {
   const clickHandler = () => {
     if (inputtext === localStorage.getItem('loginname')) {
       navigate(`/Home`);
-      console.log(inputtext);
     } else {
       alert("Invalid user!");
     }
