@@ -3,7 +3,7 @@ import "./TodoList.css";
 import "./ListItems.jsx";
 import ListItems from "./ListItems.jsx";
 import CompletedItems from "./CompletedItems.jsx";
-import { AgGridReact } from 'ag-grid-react'; // React Grid Logic
+import { AgGridReact } from "ag-grid-react"; // React Grid Logic
 import "ag-grid-community/styles/ag-grid.css"; // Core CSS
 import "ag-grid-community/styles/ag-theme-quartz.css"; // Theme
 import itemCount from "../Store.jsx";
@@ -16,6 +16,7 @@ function AddTodoItem() {
   const [completedItems, setcompletedItems] = useState([]);
   const [itemCountGlobal, setItemCountGlobal] = useState(itemCount.value);
 
+  //const GridExample = () => {
   // Row Data: The data to be displayed.
   const [rowData, setRowData] = useState([
     { make: "Tesla", model: "Model Y", price: 64950, electric: true },
@@ -23,13 +24,16 @@ function AddTodoItem() {
     { make: "Toyota", model: "Corolla", price: 29600, electric: false },
   ]);
 
-  // Column Definitions: Defines & controls grid columns.
+  // Column Definitions: Defines the columns to be displayed.
   const [colDefs, setColDefs] = useState([
     { field: "make" },
     { field: "model" },
     { field: "price" },
     { field: "electric" },
   ]);
+
+  // ...
+  //};
 
   useEffect(() => {
     itemCount.subscribe((value) => setItemCountGlobal(value));
@@ -45,7 +49,6 @@ function AddTodoItem() {
 
   const handleChange = (props) => {
     setInput(props.target.value);
-    //setItemCountGlobal(items.length);
   };
 
   const clickHandler = () => {
@@ -76,11 +79,6 @@ function AddTodoItem() {
     setItems(items.filter((i) => !completedItems.includes(i)));
   };
 
-  const handleSave = () => {
-    localStorage.items = JSON.stringify(items);
-    localStorage.completedItems = JSON.stringify(completedItems);
-  };
-
   const handleClearhistory = () => {
     localStorage.clear();
     setItems([]);
@@ -92,58 +90,62 @@ function AddTodoItem() {
   // }
 
   return (
-    <form onSubmit={handleSubmit}>
-      <div>
-        {/* <h2>My tasks</h2> */}
+    <div>
+      <form onSubmit={handleSubmit}>
+        <div>
+          <br />
+          <br />
+          Enter task:{" "}
+          <input
+            type="text"
+            name="itemInput"
+            id="input1"
+            value={inputtext}
+            onChange={handleChange}
+            ref={inputRef}
+          />
+          &nbsp; &nbsp;
+          <input type="submit" value="Submit" onClick={clickHandler} />
+          <ul className="uoList">
+            {items.map((item) => (
+              <ListItems
+                key={item.id}
+                id={item.id}
+                data={item.data}
+                itemUpdated={itemUpdated}
+              />
+            ))}
+          </ul>
+          <div
+            className="ag-theme-quartz" // applying the grid theme
+            style={{ height: 200 }} // the grid will fill the size of the parent container
+          >
+            <AgGridReact rowData={rowData} columnDefs={colDefs} />
+          </div>
+          <br />
+          <br />
+          <button type="submit" onClick={handleDelete}>
+            Move to completed
+          </button>
+          <br />
+          Completed tasks:
+          <ul className="cmpList">
+            {completedItems.map((completedItem) => (
+              <CompletedItems
+                key={completedItem.id}
+                data={completedItem.data}
+              />
+            ))}
+          </ul>
+        </div>
         <br />
         <br />
-        Enter task:{" "}
-        <input
-          type="text"
-          name="itemInput"
-          id="input1"
-          value={inputtext}
-          onChange={handleChange}
-          ref={inputRef}
-        />
-        &nbsp; &nbsp;
-        <input type="submit" value="Submit" onClick={clickHandler} />
-        <ul className="uoList">
-          {items.map((item) => (
-            <ListItems
-              key={item.id}
-              id={item.id}
-              data={item.data}
-              itemUpdated={itemUpdated}
-            />
-          ))}
-        </ul>
-        {/* <span>Total {itemCountGlobal} tasks to be completed.</span> */}
-        <br />
-        <br />
-        <button type="submit" onClick={handleDelete}>
-          Move to completed
+        &nbsp;&nbsp;
+        <button type="submit" onClick={handleClearhistory}>
+          Clear all history
         </button>
-        <br />
-        Completed tasks:
-        <ul className="cmpList">
-          {completedItems.map((completedItem) => (
-            <CompletedItems key={completedItem.id} data={completedItem.data} />
-          ))}
-        </ul>
-      </div>
-      <br />
-      <br />
-      {/* <button type="submit" onClick={handleSave}>
-          Save all changes
-      </button> */}
-      &nbsp;&nbsp;
-      <button type="submit" onClick={handleClearhistory}>
-        Clear all history
-      </button>
-      {/* The AG Grid component */}
-      {/* <AgGridReact rowData={rowData} columnDefs={colDefs} /> */}
-    </form>
+      </form>
+    </div>
   );
 }
 
