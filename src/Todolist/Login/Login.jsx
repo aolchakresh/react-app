@@ -2,6 +2,7 @@ import "./Login.css";
 import { useNavigate } from "react-router-dom";
 import React, { useEffect, useState, useRef } from "react";
 
+
 function Login() {
   const [inputtext, setInput] = useState("");
   const navigate = useNavigate();
@@ -24,20 +25,22 @@ function Login() {
   };
 
   return (
-    <form className="login">
-      <h2>Please provide your user name, to login</h2>
-      <input
-        type="text"
-        name="itemInput"
-        id="input1"
-        value={inputtext}
-        onChange={handleChange}
-        ref={inputRef}
-      />
-      <br />
-      <br />
-      <input type="button" value="Login" onClick={clickHandler} />
-    </form>
+    <div><h1>Task Manager</h1>
+      <form className="login">
+        <h2>Please provide your user name, to login</h2>
+        <input
+          type="text"
+          name="itemInput"
+          id="input1"
+          value={inputtext}
+          onChange={handleChange}
+          ref={inputRef}
+        />
+        <br />
+        <br />
+        <input type="submit" value="Login" onClick={clickHandler} />
+      </form>
+    </div>
   );
 }
 

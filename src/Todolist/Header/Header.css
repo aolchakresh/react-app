@@ -10,5 +10,13 @@
       margin-right: 50px; 
       text-decoration: underline;
     }
+
+    .welcomemsg {
+      text-decoration: solid;
+      font-size: 20px;
+      text-shadow: blue;
+    }
+    
   }
+
 
