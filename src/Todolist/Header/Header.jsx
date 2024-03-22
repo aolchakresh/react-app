@@ -1,16 +1,10 @@
 import './Header.css'
 import { Link } from 'react-router-dom'
-import itemCount from "../Store.jsx"
-import { useEffect } from 'react';
-import { useState } from 'react';
+import { useItemCount } from '../../hooks/useItemCount.js';
 
 
 function Header() {
-    const [itemCountGlobal, setItemCountGlobal] = useState(itemCount.value);
-    
-    useEffect(() => {
-        itemCount.subscribe((value) => setItemCountGlobal(value));
-    }, []);
+    const [itemCountGlobal] = useItemCount();
 
     return(
         <div className="header">

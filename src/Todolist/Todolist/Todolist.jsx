@@ -6,7 +6,7 @@ import CompletedItems from "./CompletedItems.jsx";
 import { AgGridReact } from "ag-grid-react"; // React Grid Logic
 import "ag-grid-community/styles/ag-grid.css"; // Core CSS
 import "ag-grid-community/styles/ag-theme-quartz.css"; // Theme
-import itemCount from "../Store.jsx";
+import { useItemCount } from "../../hooks/useItemCount.js";
 
 function AddTodoItem() {
   const [inputtext, setInput] = useState("");
@@ -14,7 +14,7 @@ function AddTodoItem() {
   const inputRef = useRef();
   const selectedItems = useRef([]);
   const [completedItems, setcompletedItems] = useState([]);
-  const [itemCountGlobal, setItemCountGlobal] = useState(itemCount.value);
+  const [_, itemCountSetter] = useItemCount();
 
   //const GridExample = () => {
   // Row Data: The data to be displayed.
@@ -36,8 +36,9 @@ function AddTodoItem() {
   //};
 
   useEffect(() => {
-    itemCount.subscribe((value) => setItemCountGlobal(value));
-    itemCount.next(JSON.parse(localStorage.items).length);
+    if (localStorage.items){
+      itemCountSetter(JSON.parse(localStorage.getItem("items")).length);
+    }
     inputRef.current.focus();
     if (localStorage.items) {
       setItems(JSON.parse(localStorage.items));
@@ -57,10 +58,12 @@ function AddTodoItem() {
   };
 
   const handleSubmit = (event) => {
-    itemCount.next(items.length);
     event.preventDefault();
+
+    itemCountSetter(items.length);
     localStorage.items = JSON.stringify(items);
     localStorage.completedItems = JSON.stringify(completedItems);
+    
   };
 
   const itemUpdated = (id) => {
@@ -70,7 +73,7 @@ function AddTodoItem() {
   const handleDelete = () => {
     selectedItems.current.forEach((element) => {
       completedItems.push(items[element]);
-      itemCount.next(items.length);
+      itemCountSetter(items.length);
       localStorage.items = JSON.stringify(items);
       localStorage.completedItems = JSON.stringify(completedItems);
     });

@@ -1,13 +1,16 @@
 import logo from "../Home/todolist.png";
 import { Link } from "react-router-dom";
-import itemCount from "../Store.jsx";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import { useItemCount } from "../../hooks/useItemCount.js";
 
 function Home() {
-  const [itemCountGlobal, setItemCountGlobal] = useState(itemCount.value);
+  const [_, itemCountSetter] = useItemCount();
+
   useEffect(() => {
-     itemCount.subscribe(() => setItemCountGlobal(0));
-     itemCount.next((JSON.parse(localStorage.items)).length);
+    if (localStorage.items){
+      itemCountSetter((JSON.parse(localStorage.getItem("items"))).length);
+    }
+    
    },[])
   return (
     <div>
